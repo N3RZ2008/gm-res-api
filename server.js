@@ -5,9 +5,7 @@ import { ObjectId } from "mongodb"
 
 const app = e()
 app.use(e.json())
-app.use(cors({
-    origin: process.env.CORS_ORIGIN || "*"
-}))
+app.use(cors())
 const PORT = process.env.PORT || 3000
 
 app.get("/health", (req, res) => res.json({ ok: true }))
