@@ -59,10 +59,10 @@ app.put("/users/:id", async (req, res) => {
 app.delete("/users/:id", async (req, res) => {
     try {
         const db = await connect()
-        const result = await db.collection("stands").deleteOne(
+        const result = await db.collection("users").deleteOne(
             { userId: req.params.id }
         )
-        res.json({ deletedCount: req.deletedCount })
+        res.json({ deletedCount: result.deletedCount })
     } catch (e) {
         console.error(e)
         res.status(500).json({ error: "internal" })
