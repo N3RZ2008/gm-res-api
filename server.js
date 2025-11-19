@@ -69,4 +69,63 @@ app.delete("/users/:id", async (req, res) => {
     }
 })
 
+// Orders
+// Select all
+app.get("/orders", async (req, res) => {
+    const db = await connect()
+    const docs = await db.collection("orders").find().toArray()
+    res.json(docs)
+})
+
+// Select one
+app.get("/orders/:number", async (req, res) => {
+    const db = await connect()
+    const adm = await db.collection("orders")
+        .findOne({ number: req.params.number })
+    if (!adm) return res.status(404).json({ error: "not found" })
+    res.json(adm)
+})
+
+// Insert
+app.post("/orders", async (req, res) => {
+    try {
+        const db = await connect()
+        const body = req.body
+        const result = await db.collection("orders").insertOne(body)
+        res.status(201).json({ insertedId: result.insertedId })
+    } catch (e) {
+        console.error(e)
+        res.status(500).json({ error: "internal" })
+    }
+})
+
+// Edit
+app.put("/orders/:number", async (req, res) => {
+    try {
+        const db = await connect()
+        const result = await db.collection("orders").updateOne(
+            { number: req.params.number },
+            { $set: req.body }
+        )
+        res.json({ modifiedCount: result.modifiedCount })
+    } catch (e) {
+        console.error(e)
+        res.status(500).json({ error: "internal" })
+    }
+})
+
+// Delete
+app.delete("/orders/:number", async (req, res) => {
+    try {
+        const db = await connect()
+        const result = await db.collection("orders").deleteOne(
+            { number: req.params.number }
+        )
+        res.json({ deletedCount: result.deletedCount })
+    } catch (e) {
+        console.error(e)
+        res.status(500).json({ error: "internal" })
+    }
+})
+
 app.listen(PORT, () => { console.log(`Listening on ${PORT}`) })
