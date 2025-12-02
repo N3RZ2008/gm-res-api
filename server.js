@@ -81,7 +81,7 @@ app.get("/orders", async (req, res) => {
 app.get("/orders/:id", async (req, res) => {
     const db = await connect()
     const adm = await db.collection("orders")
-        .findOne({ number: req.params.id })
+        .findOne({ number: Number(req.params.id) })
     if (!adm) return res.status(404).json({ error: "not found" })
     res.json(adm)
 })
@@ -104,7 +104,7 @@ app.put("/orders/:id", async (req, res) => {
     try {
         const db = await connect()
         const result = await db.collection("orders").updateOne(
-            { number: req.params.id },
+            { number: Number(req.params.id) },
             { $set: req.body }
         )
         res.json({ modifiedCount: result.modifiedCount })
@@ -119,7 +119,7 @@ app.delete("/orders/:id", async (req, res) => {
     try {
         const db = await connect()
         const result = await db.collection("orders").deleteOne(
-            { number: req.params.id }
+            { number: Number(req.params.id) }
         )
         res.json({ deletedCount: result.deletedCount })
     } catch (e) {
@@ -140,7 +140,7 @@ app.get("/orderConfig", async (req, res) => {
 app.get("/orderConfig/:id", async (req, res) => {
     const db = await connect()
     const adm = await db.collection("orderConfig")
-        .findOne({ number: req.params.id })
+        .findOne({ number: Number(req.params.id) })
     if (!adm) return res.status(404).json({ error: "not found" })
     res.json(adm)
 })
@@ -163,7 +163,7 @@ app.put("/orderConfig/:id", async (req, res) => {
     try {
         const db = await connect()
         const result = await db.collection("orderConfig").updateOne(
-            { number: req.params.id },
+            { number: Number(req.params.id) },
             { $set: req.body }
         )
         res.json({ modifiedCount: result.modifiedCount })
@@ -178,7 +178,7 @@ app.delete("/orderConfig/:id", async (req, res) => {
     try {
         const db = await connect()
         const result = await db.collection("orderConfig").deleteOne(
-            { number: req.params.id }
+            { number: Number(req.params.id) }
         )
         res.json({ deletedCount: result.deletedCount })
     } catch (e) {
