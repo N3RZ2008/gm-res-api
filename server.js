@@ -128,4 +128,63 @@ app.delete("/orders/:number", async (req, res) => {
     }
 })
 
+// OrderConfig
+// Select all
+app.get("/orderConfig", async (req, res) => {
+    const db = await connect()
+    const docs = await db.collection("orderConfig").find().toArray()
+    res.json(docs)
+})
+
+// Select one
+app.get("/orderConfig/:number", async (req, res) => {
+    const db = await connect()
+    const adm = await db.collection("orderConfig")
+        .findOne({ number: req.params.number })
+    if (!adm) return res.status(404).json({ error: "not found" })
+    res.json(adm)
+})
+
+// Insert
+app.post("/orderConfig", async (req, res) => {
+    try {
+        const db = await connect()
+        const body = req.body
+        const result = await db.collection("orderConfig").insertOne(body)
+        res.status(201).json({ insertedId: result.insertedId })
+    } catch (e) {
+        console.error(e)
+        res.status(500).json({ error: "internal" })
+    }
+})
+
+// Edit
+app.put("/orderConfig/:number", async (req, res) => {
+    try {
+        const db = await connect()
+        const result = await db.collection("orderConfig").updateOne(
+            { number: req.params.number },
+            { $set: req.body }
+        )
+        res.json({ modifiedCount: result.modifiedCount })
+    } catch (e) {
+        console.error(e)
+        res.status(500).json({ error: "internal" })
+    }
+})
+
+// Delete
+app.delete("/orderConfig/:number", async (req, res) => {
+    try {
+        const db = await connect()
+        const result = await db.collection("orderConfig").deleteOne(
+            { number: req.params.number }
+        )
+        res.json({ deletedCount: result.deletedCount })
+    } catch (e) {
+        console.error(e)
+        res.status(500).json({ error: "internal" })
+    }
+})
+
 app.listen(PORT, () => { console.log(`Listening on ${PORT}`) })
