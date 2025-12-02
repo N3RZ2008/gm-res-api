@@ -78,10 +78,10 @@ app.get("/orders", async (req, res) => {
 })
 
 // Select one
-app.get("/orders/:number", async (req, res) => {
+app.get("/orders/:id", async (req, res) => {
     const db = await connect()
     const adm = await db.collection("orders")
-        .findOne({ number: req.params.number })
+        .findOne({ number: req.params.id })
     if (!adm) return res.status(404).json({ error: "not found" })
     res.json(adm)
 })
@@ -100,11 +100,11 @@ app.post("/orders", async (req, res) => {
 })
 
 // Edit
-app.put("/orders/:number", async (req, res) => {
+app.put("/orders/:id", async (req, res) => {
     try {
         const db = await connect()
         const result = await db.collection("orders").updateOne(
-            { number: req.params.number },
+            { number: req.params.id },
             { $set: req.body }
         )
         res.json({ modifiedCount: result.modifiedCount })
@@ -115,11 +115,11 @@ app.put("/orders/:number", async (req, res) => {
 })
 
 // Delete
-app.delete("/orders/:number", async (req, res) => {
+app.delete("/orders/:id", async (req, res) => {
     try {
         const db = await connect()
         const result = await db.collection("orders").deleteOne(
-            { number: req.params.number }
+            { number: req.params.id }
         )
         res.json({ deletedCount: result.deletedCount })
     } catch (e) {
@@ -137,10 +137,10 @@ app.get("/orderConfig", async (req, res) => {
 })
 
 // Select one
-app.get("/orderConfig/:number", async (req, res) => {
+app.get("/orderConfig/:id", async (req, res) => {
     const db = await connect()
     const adm = await db.collection("orderConfig")
-        .findOne({ number: req.params.number })
+        .findOne({ number: req.params.id })
     if (!adm) return res.status(404).json({ error: "not found" })
     res.json(adm)
 })
@@ -159,11 +159,11 @@ app.post("/orderConfig", async (req, res) => {
 })
 
 // Edit
-app.put("/orderConfig/:number", async (req, res) => {
+app.put("/orderConfig/:id", async (req, res) => {
     try {
         const db = await connect()
         const result = await db.collection("orderConfig").updateOne(
-            { number: req.params.number },
+            { number: req.params.id },
             { $set: req.body }
         )
         res.json({ modifiedCount: result.modifiedCount })
@@ -174,11 +174,11 @@ app.put("/orderConfig/:number", async (req, res) => {
 })
 
 // Delete
-app.delete("/orderConfig/:number", async (req, res) => {
+app.delete("/orderConfig/:id", async (req, res) => {
     try {
         const db = await connect()
         const result = await db.collection("orderConfig").deleteOne(
-            { number: req.params.number }
+            { number: req.params.id }
         )
         res.json({ deletedCount: result.deletedCount })
     } catch (e) {
